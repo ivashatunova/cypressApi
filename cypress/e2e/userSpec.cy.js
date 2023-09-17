@@ -1,15 +1,6 @@
 describe("api user spec", () => {
   it("should create new user", () => {
-    cy.request("POST", "https://petstore.swagger.io/v2/user", {
-      id: 400,
-      username: "IvannaTest",
-      firstName: "Test",
-      lastName: "Test",
-      email: "test@test.com",
-      password: "password",
-      phone: "3453t53t53",
-      userStatus: 0,
-    }).then((response) => {
+    createUser("IvannaTest").then((response) => {
       expect(response.status).be.eq(200);
       expect(response.body).be.eqls({
         code: 200,
@@ -20,6 +11,8 @@ describe("api user spec", () => {
   });
 
   it("should update user", () => {
+    createUser("IvannaTest");
+
     cy.request("PUT", "https://petstore.swagger.io/v2/user/IvannaTest", {
       phone: "77777777",
     }).then((response) => {
@@ -33,9 +26,9 @@ describe("api user spec", () => {
   });
 
   it("should delete user", () => {
-    cy.request("DELETE", "https://petstore.swagger.io/v2/user/IvannaTest", {
-      phone: "77777777",
-    }).then((response) => {
+    createUser("IvannaTest");
+
+    cy.deleteUser("IvannaTest").then((response) => {
       expect(response.status).be.eq(200);
       expect(response.body).be.eqls({
         code: 200,
@@ -45,3 +38,16 @@ describe("api user spec", () => {
     });
   });
 });
+
+const createUser = (userName) => {
+  return cy.createUser(
+    400,
+    userName,
+    "Test",
+    "Test",
+    "test@test.com",
+    "password",
+    "3453t53t53",
+    0
+  );
+};

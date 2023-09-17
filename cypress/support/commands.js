@@ -23,3 +23,26 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add(
+  "createUser",
+  (id, username, firstName, lastName, email, password, phone, userStatus) => {
+    return cy.request("POST", "https://petstore.swagger.io/v2/user", {
+      id: id,
+      username: username,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      phone: phone,
+      userStatus: userStatus,
+    });
+  }
+);
+
+Cypress.Commands.add("deleteUser", (userName) => {
+  return cy.request(
+    "DELETE",
+    `https://petstore.swagger.io/v2/user/${userName}`
+  );
+});
